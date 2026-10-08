@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="my" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Library - Digital Archive</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Padauk:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#fffbeb',
+              100: '#fef3c7',
+              500: '#f59e0b',
+              600: '#d97706',
+              800: '#92400e',
+              900: '#78350f',
+              gold: '#D4AF37',
+              darkBg: '#0F172A',
+              cardBg: '#1E293B'
+            }
+          },
+          fontFamily: {
+            serif: ['Cinzel', 'serif'],
+            burmese: ['Padauk', 'sans-serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-950 text-slate-100 font-burmese min-h-screen flex flex-col selection:bg-amber-500 selection:text-black">
+
+  <!-- NAVIGATION BAR -->
+  <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-amber-600 to-amber-400 flex items-center justify-center shadow-lg shadow-amber-500/20 group-hover:scale-105 transition">
+          <i class="fa-solid fa-book-bookmark text-2xl text-slate-950"></i>
+        </div>
+        <div>
+          <span class="font-serif text-2xl font-bold tracking-wider bg-gradient-to-r from-amber-200 via-amber-400 to-amber-500 bg-clip-text text-transparent block leading-none">THE LIBRARY</span>
+          <span class="text-[11px] text-amber-500/80 tracking-widest font-sans uppercase">Telegram Digital Hub</span>
+        </div>
+      </a>
+
+      <!-- Menu Navigation -->
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+        <button onclick="switchTab('catalog')" id="nav-catalog" class="text-amber-400 flex items-center gap-2 px-3 py-2 rounded-lg bg-amber-500/10">
+          <i class="fa-solid fa-books"></i> <span data-i18n="navCatalog">စာအုပ်များ</span>
+        </button>
+        <button onclick="switchTab('articles')" id="nav-articles" class="text-slate-400 hover:text-amber-400 flex items-center gap-2 px-3 py-2 rounded-lg transition">
+          <i class="fa-solid fa-newspaper"></i> <span data-i18n="navArticles">ဆောင်းပါးများ</span>
+        </button>
+        <button onclick="switchTab('about')" id="nav-about" class="text-slate-400 hover:text-amber-400 flex items-center gap-2 px-3 py-2 rounded-lg transition">
+          <i class="fa-solid fa-circle-info"></i> <span data-i18n="navAbout">အကြောင်း</span>
+        </button>
+      </nav>
+
+      <!-- Right Action Buttons -->
+      <div class="flex items-center gap-3">
+        <!-- Language Switcher Button -->
+        <button onclick="toggleLanguage()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-700 hover:border-amber-500/50 text-slate-300 hover:text-amber-400 text-xs font-semibold transition bg-slate-800/50">
+          <i class="fa-solid fa-globe text-amber-500"></i>
+          <span id="lang-btn-text">EN</span>
+        </button>
+
+        <!-- Admin Control Button -->
+        <button onclick="openAdminModal()" class="px-3.5 py-1.5 rounded-lg border border-amber-500/30 hover:border-amber-500 text-amber-400 hover:bg-amber-500/10 text-xs font-semibold transition flex items-center gap-1.5">
+          <i class="fa-solid fa-user-shield"></i>
+          <span data-i18n="adminAccess">ထိန်းချုပ်ခန်း</span>
+        </button>
+        
+        <!-- Telegram Channel Link -->
+        <a href="https://t.me" target="_blank" class="hidden sm:flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold text-xs px-4 py-2 rounded-lg shadow-md hover:shadow-amber-500/20 transition">
+          <i class="fa-brands fa-telegram text-base"></i>
+          <span data-i18n="telegramChannel">Telegram Channel</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="relative py-12 md:py-16 bg-slate-900 border-b border-slate-800/80 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+      <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20 mb-4">
+        <i class="fa-solid fa-sparkles"></i> <span data-i18n="heroBadge">The Library Digital Archive</span>
+      </span>
+      <h1 class="text-3xl md:text-5xl font-bold tracking-tight text-slate-100 max-w-3xl mx-auto leading-tight" data-i18n="heroTitle">
+        ဗဟုသုတနှင့် စာပေရတနာများ ရှာဖွေဖတ်ရှုပါ
+      </h1>
+      <p class="mt-3 text-slate-400 text-sm md:text-base max-w-2xl mx-auto" data-i18n="heroDesc">
+        The Library မှ စုစည်းတင်ဆက်ထားသော PDF E-Book များ၊ သမိုင်း၊ နည်းပညာ၊ ရသစာပေနှင့် ဆောင်းပါးများကို လွယ်ကူစွာ ရှာဖွေ၍ တိုက်ရိုက် ရယူနိုင်ပါသည်။
+      </p>
+
+      <!-- Search & Filter Controls -->
+      <div class="mt-8 max-w-2xl mx-auto flex flex-col sm:flex-row gap-3">
+        <div class="relative flex-1">
+          <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
+          <input type="text" id="searchInput" oninput="handleSearch()" data-i18n-placeholder="searchPlaceholder" placeholder="စာအုပ်အမည်၊ စာရေးဆရာ သို့မဟုတ် သော့ချက်စာလုံးဖြင့် ရှာပါ..." class="w-full pl-11 pr-4 py-3 bg-slate-950 border border-slate-700 rounded-xl focus:outline-none focus:border-amber-500 text-sm text-slate-100 placeholder-slate-500 shadow-inner">
+        </div>
+        <select id="genreFilter" onchange="handleFilter()" class="bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-300 focus:outline-none focus:border-amber-500">
+          <option value="All" data-i18n="allGenres">အမျိုးအစား အားလုံး</option>
+          <option value="Technology">Technology / နည်းပညာ</option>
+          <option value="History">History / သမိုင်း</option>
+          <option value="Novel">Novel / ဝတ္ထု</option>
+          <option value="Business">Business / စီးပွားရေး</option>
+          <option value="General">General / အထွေထွေ</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- CATALOG TAB -->
+    <div id="tab-catalog" class="space-y-6">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div>
+          <h2 class="text-xl font-bold text-slate-200 flex items-center gap-2">
+            <i class="fa-solid fa-book-open text-amber-500"></i> <span data-i18n="bookCatalogTitle">စာအုပ်စင်</span>
+          </h2>
+          <p class="text-xs text-slate-500 mt-1"><span data-i18n="totalBooksPrefix">စုစုပေါင်း</span> <span id="bookCount" class="text-amber-400 font-bold">0</span> <span data-i18n="totalBooksSuffix">အုပ် ရှိသည်</span></p>
+        </div>
+      </div>
+
+      <!-- Book Grid -->
+      <div id="bookGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Dynamic Books Rendered via JS -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="emptyState" class="hidden text-center py-16 bg-slate-900/50 rounded-2xl border border-dashed border-slate-800">
+        <i class="fa-solid fa-box-open text-4xl text-slate-600 mb-3"></i>
+        <h3 class="text-lg font-bold text-slate-300" data-i18n="noBooksFound">စာအုပ်များ မရှိသေးပါ</h3>
+        <p class="text-xs text-slate-500 mt-1" data-i18n="noBooksDesc">Owner Control ထဲသို့သွား၍ စာအုပ်အသစ်များ တင်ယူနိုင်ပါသည်။</p>
+      </div>
+    </div>
+
+    <!-- ARTICLES TAB -->
+    <div id="tab-articles" class="hidden space-y-6">
+      <div class="border-b border-slate-800 pb-4">
+        <h2 class="text-xl font-bold text-slate-200 flex items-center gap-2">
+          <i class="fa-solid fa-feather-pointed text-amber-500"></i> <span data-i18n="articlesTitle">ဆောင်းပါးများနှင့် သတင်းအချက်အလက်များ</span>
+        </h2>
+      </div>
+      <div id="articlesGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Dynamic Articles Rendered via JS -->
+      </div>
+      <div id="emptyArticles" class="hidden text-center py-16 bg-slate-900/50 rounded-2xl border border-dashed border-slate-800">
+        <i class="fa-solid fa-newspaper text-4xl text-slate-600 mb-3"></i>
+        <h3 class="text-lg font-bold text-slate-300" data-i18n="noArticlesFound">ဆောင်းပါးများ မရှိသေးပါ</h3>
+      </div>
+    </div>
+
+    <!-- ABOUT TAB -->
+    <div id="tab-about" class="hidden space-y-6 max-w-3xl mx-auto py-8">
+      <div class="bg-slate-900 p-8 rounded-2xl border border-slate-800 text-center space-y-4">
+        <div class="w-20 h-20 bg-amber-500/10 rounded-full flex items-center justify-center mx-auto text-amber-400 text-3xl">
+          <i class="fa-solid fa-landmark"></i>
+        </div>
+        <h2 class="text-2xl font-bold font-serif text-amber-400">THE LIBRARY</h2>
+        <p class="text-sm text-slate-300 leading-relaxed" data-i18n="aboutText">
+          The Library သည် တန်ဖိုးရှိသော PDF စာအုပ်များနှင့် ဗဟုသုတ ဖြစ်ဖွယ် ဆောင်းပါးများကို တစ်နေရာတည်းတွင် လွယ်ကူစွာ ရှာဖွေဖတ်ရှုနိုင်ရန် တည်ထောင်ထားသော Digital စာကြည့်တိုက် ဖြစ်ပါသည်။
+        </p>
+        <div class="pt-4 border-t border-slate-800 flex justify-center gap-4">
+          <a href="https://t.me" target="_blank" class="px-6 py-2.5 bg-sky-500/10 text-sky-400 hover:bg-sky-500/20 rounded-xl font-semibold text-xs border border-sky-500/30 flex items-center gap-2">
+            <i class="fa-brands fa-telegram"></i> Join Telegram Channel
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ADMIN / OWNER MODAL -->
+  <div id="adminModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl relative">
+      <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-100 text-xl">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- Password Check View -->
+      <div id="adminAuthView" class="text-center py-8 space-y-4">
+        <div class="w-16 h-16 bg-amber-500/10 text-amber-400 rounded-full flex items-center justify-center mx-auto text-2xl">
+          <i class="fa-solid fa-lock"></i>
+        </div>
+        <h3 class="text-xl font-bold text-slate-100" data-i18n="adminLockTitle">Owner Access Control</h3>
+        <p class="text-xs text-slate-400" data-i18n="adminLockDesc">Website ထိန်းချုပ်ခန်းသို့ ဝင်ရောက်ရန် Passcode ထည့်ပါ။ (Demo Password: admin123)</p>
+        <div class="max-w-xs mx-auto space-y-3">
+          <input type="password" id="adminPasscode" placeholder="Passcode ထည့်ပါ" class="w-full px-4 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-center text-sm focus:outline-none focus:border-amber-500">
+          <button onclick="verifyAdmin()" class="w-full py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl text-sm transition">
+            <span data-i18n="loginBtn">ဝင်ရောက်မည်</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Dashboard View -->
+      <div id="adminDashboardView" class="hidden space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <h3 class="text-lg font-bold text-amber-400 flex items-center gap-2">
+            <i class="fa-solid fa-sliders"></i> <span data-i18n="adminPanelTitle">Website ထိန်းချုပ်ခန်း</span>
+          </h3>
+          <button onclick="logoutAdmin()" class="text-xs text-rose-400 hover:underline" data-i18n="logout">ထွက်မည်</button>
+        </div>
+
+        <!-- Add eBook Form -->
+        <form onsubmit="handleAddBook(event)" class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-amber-500" data-i18n="addEbookTitle">+ E-Book စာအုပ်အသစ် တင်ရန်</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <input type="text" id="bookTitle" placeholder="စာအုပ်အမည်" required class="px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-slate-200">
+            <input type="text" id="bookAuthor" placeholder="စာရေးဆရာ" required class="px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-slate-200">
+            <select id="bookGenre" class="px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-slate-200">
+              <option value="Technology">Technology</option>
+              <option value="History">History</option>
+              <option value="Novel">Novel</option>
+              <option value="Business">Business</option>
+              <option value="General">General</option>
+            </select>
+            <input type="url" id="bookCover" placeholder="မျက်နှာဖုံးပုံ Link (URL)" class="px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-slate-200">
+          </div>
+          <input type="url" id="bookPdf" placeholder="PDF File Download Link (Google Drive / Direct PDF URL)" required class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-slate-200">
+          <textarea id="bookDesc" placeholder="အကြောင်းအရာ အကျဉ်းချုပ်" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-slate-200 h-16"></textarea>
+          <button type="submit" class="w-full py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs rounded-lg transition" data-i18n="uploadBookBtn">
+            စာအုပ် တင်မည်
+          </button>
+        </form>
+
+        <!-- Add Article Form -->
+        <form onsubmit="handleAddArticle(event)" class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-sky-400" data-i18n="addArticleTitle">+ ဆောင်းပါးအသစ် တင်ရန်</h4>
+          <input type="text" id="articleTitle" placeholder="ဆောင်းပါး ခေါင်းစဉ်" required class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-slate-200">
+          <textarea id="articleContent" placeholder="ဆောင်းပါး အကြောင်းအရာများ..." required class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-slate-200 h-24"></textarea>
+          <button type="submit" class="w-full py-2 bg-sky-500 hover:bg-sky-600 text-slate-950 font-bold text-xs rounded-lg transition" data-i18n="uploadArticleBtn">
+            ဆောင်းပါး တင်မည်
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-950 border-t border-slate-800/80 py-6 mt-12 text-center text-xs text-slate-500">
+    <p>© 2026 THE LIBRARY. All Rights Reserved.</p>
+  </footer>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // Language Dictionary
+    const translations = {
+      my: {
+        navCatalog: "စာအုပ်များ",
+        navArticles: "ဆောင်းပါးများ",
+        navAbout: "အကြောင်း",
+        adminAccess: "ထိန်းချုပ်ခန်း",
+        telegramChannel: "Telegram Channel",
+        heroBadge: "The Library Digital Archive",
+        heroTitle: "ဗဟုသုတနှင့် စာပေရတနာများ ရှာဖွေဖတ်ရှုပါ",
+        heroDesc: "The Library မှ စုစည်းတင်ဆက်ထားသော PDF E-Book များ၊ သမိုင်း၊ နည်းပညာ၊ ရသစာပေနှင့် ဆောင်းပါးများကို လွယ်ကူစွာ ရှာဖွေ၍ တိုက်ရိုက် ရယူနိုင်ပါသည်။",
+        searchPlaceholder: "စာအုပ်အမည်၊ စာရေးဆရာ သို့မဟုတ် သော့ချက်စာလုံးဖြင့် ရှာပါ...",
+        allGenres: "အမျိုးအစား အားလုံး",
+        bookCatalogTitle: "စာအုပ်စင်",
+        totalBooksPrefix: "စုစုပေါင်း",
+        totalBooksSuffix: "အုပ် ရှိသည်",
+        noBooksFound: "စာအုပ်များ မရှိသေးပါ",
+        noBooksDesc: "Owner Control ထဲသို့သွား၍ စာအုပ်အသစ်များ တင်ယူနိုင်ပါသည်။",
+        articlesTitle: "ဆောင်းပါးများနှင့် သတင်းအချက်အလက်များ",
+        noArticlesFound: "ဆောင်းပါးများ မရှိသေးပါ",
+        aboutText: "The Library သည် တန်ဖိုးရှိသော PDF စာအုပ်များနှင့် ဗဟုသုတ ဖြစ်ဖွယ် ဆောင်းပါးများကို တစ်နေရာတည်းတွင် လွယ်ကူစွာ ရှာဖွေဖတ်ရှုနိုင်ရန် တည်ထောင်ထားသော Digital စာကြည့်တိုက် ဖြစ်ပါသည်။",
+        adminLockTitle: "Owner Access Control",
+        adminLockDesc: "Website ထိန်းချုပ်ခန်းသို့ ဝင်ရောက်ရန် Passcode ထည့်ပါ။ (Demo Password: admin123)",
+        loginBtn: "ဝင်ရောက်မည်",
+        adminPanelTitle: "Website ထိန်းချုပ်ခန်း",
+        logout: "ထွက်မည်",
+        addEbookTitle: "+ E-Book စာအုပ်အသစ် တင်ရန်",
+        uploadBookBtn: "စာအုပ် တင်မည်",
+        addArticleTitle: "+ ဆောင်းပါးအသစ် တင်ရန်",
+        uploadArticleBtn: "ဆောင်းပါး တင်မည်",
+        downloadBtn: "Download ဆွဲမည်",
+        deleteBtn: "ဖျက်မည်"
+      },
+      en: {
+        navCatalog: "Catalog",
+        navArticles: "Articles",
+        navAbout: "About",
+        adminAccess: "Owner Access",
+        telegramChannel: "Telegram Channel",
+        heroBadge: "The Library Digital Archive",
+        heroTitle: "Discover Knowledge & Great Literature",
+        heroDesc: "Search, preview, and download digital PDF E-books, historical archives, tech guides, and curated articles directly from The Library.",
+        searchPlaceholder: "Search by title, author or keyword...",
+        allGenres: "All Genres",
+        bookCatalogTitle: "E-Book Bookshelf",
+        totalBooksPrefix: "Total",
+        totalBooksSuffix: "books available",
+        noBooksFound: "No books available yet",
+        noBooksDesc: "Access the Owner Panel to upload new PDF E-books.",
+        articlesTitle: "Articles & Publications",
+        noArticlesFound: "No articles published yet",
+        aboutText: "The Library is a dedicated digital sanctuary for acquiring PDF E-books, historical resources, and insightful literary content.",
+        adminLockTitle: "Owner Access Control",
+        adminLockDesc: "Enter passcode to open management dashboard. (Demo Password: admin123)",
+        loginBtn: "Login",
+        adminPanelTitle: "Website Admin Dashboard",
+        logout: "Logout",
+        addEbookTitle: "+ Upload New E-Book",
+        uploadBookBtn: "Publish E-Book",
+        addArticleTitle: "+ Publish New Article",
+        uploadArticleBtn: "Publish Article",
+        downloadBtn: "Download PDF",
+        deleteBtn: "Delete"
+      }
+    };
+
+    let currentLang = 'my';
+    let books = JSON.parse(localStorage.getItem('the_library_books')) || [];
+    let articles = JSON.parse(localStorage.getItem('the_library_articles')) || [];
+    let isAdminLoggedIn = false;
+
+    // Toggle Language
+    function toggleLanguage() {
+      currentLang = currentLang === 'my' ? 'en' : 'my';
+      document.getElementById('lang-btn-text').innerText = currentLang === 'my' ? 'EN' : 'မြန်မာ';
+      updateLanguageUI();
+    }
+
+    function updateLanguageUI() {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[currentLang][key]) {
+          el.innerText = translations[currentLang][key];
+        }
+      });
+
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (translations[currentLang][key]) {
+          el.placeholder = translations[currentLang][key];
+        }
+      });
+
+      renderBooks();
+      renderArticles();
+    }
+
+    // Switch Nav Tabs
+    function switchTab(tabName) {
+      document.getElementById('tab-catalog').classList.add('hidden');
+      document.getElementById('tab-articles').classList.add('hidden');
+      document.getElementById('tab-about').classList.add('hidden');
+
+      document.getElementById('nav-catalog').className = "text-slate-400 hover:text-amber-400 flex items-center gap-2 px-3 py-2 rounded-lg transition";
+      document.getElementById('nav-articles').className = "text-slate-400 hover:text-amber-400 flex items-center gap-2 px-3 py-2 rounded-lg transition";
+      document.getElementById('nav-about').className = "text-slate-400 hover:text-amber-400 flex items-center gap-2 px-3 py-2 rounded-lg transition";
+
+      document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+      document.getElementById(`nav-${tabName}`).className = "text-amber-400 flex items-center gap-2 px-3 py-2 rounded-lg bg-amber-500/10";
+    }
+
+    // Render Books
+    function renderBooks() {
+      const grid = document.getElementById('bookGrid');
+      const emptyState = document.getElementById('emptyState');
+      const searchVal = document.getElementById('searchInput').value.toLowerCase();
+      const genreVal = document.getElementById('genreFilter').value;
+
+      const filtered = books.filter(b => {
+        const matchSearch = b.title.toLowerCase().includes(searchVal) || b.author.toLowerCase().includes(searchVal);
+        const matchGenre = genreVal === 'All' || b.genre === genreVal;
+        return matchSearch && matchGenre;
+      });
+
+      document.getElementById('bookCount').innerText = filtered.length;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+      grid.innerHTML = filtered.map((book) => `
+        <div class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800 hover:border-amber-500/50 transition duration-300 flex flex-col group">
+          <div class="h-48 bg-slate-950 relative overflow-hidden flex items-center justify-center">
+            ${book.cover ? `<img src="${book.cover}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">` : `<i class="fa-solid fa-book text-4xl text-slate-700"></i>`}
+            <span class="absolute top-2 right-2 bg-slate-950/80 backdrop-blur-md border border-slate-800 text-amber-400 text-[10px] px-2 py-0.5 rounded font-medium">
+              ${book.genre}
+            </span>
+          </div>
+          <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+            <div>
+              <h3 class="font-bold text-slate-200 text-sm line-clamp-1 group-hover:text-amber-400 transition">${book.title}</h3>
+              <p class="text-xs text-slate-400 mt-1"><i class="fa-solid fa-pen-nib text-amber-500/70 mr-1"></i> ${book.author}</p>
+              <p class="text-xs text-slate-500 mt-2 line-clamp-2">${book.desc || ''}</p>
+            </div>
+            <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between gap-2">
+              <a href="${book.pdfUrl}" target="_blank" class="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-1.5 px-3 rounded-lg text-xs text-center transition flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-download"></i> ${translations[currentLang].downloadBtn}
+              </a>
+              ${isAdminLoggedIn ? `
+                <button onclick="deleteBook(${book.id})" class="p-1.5 text-rose-400 hover:bg-rose-500/10 rounded-lg transition" title="Delete">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              ` : ''}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Render Articles
+    function renderArticles() {
+      const grid = document.getElementById('articlesGrid');
+      const emptyArticles = document.getElementById('emptyArticles');
+
+      if (articles.length === 0) {
+        grid.innerHTML = '';
+        emptyArticles.classList.remove('hidden');
+        return;
+      }
+
+      emptyArticles.classList.add('hidden');
+      grid.innerHTML = articles.map((art) => `
+        <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 space-y-3 relative">
+          <div class="flex items-center justify-between text-xs text-slate-500">
+            <span><i class="fa-solid fa-calendar text-sky-400 mr-1"></i> ${art.date}</span>
+            ${isAdminLoggedIn ? `<button onclick="deleteArticle(${art.id})" class="text-rose-400 hover:underline text-xs"><i class="fa-solid fa-trash"></i> ${translations[currentLang].deleteBtn}</button>` : ''}
+          </div>
+          <h3 class="font-bold text-slate-200 text-base">${art.title}</h3>
+          <p class="text-xs text-slate-400 leading-relaxed whitespace-pre-line">${art.content}</p>
+        </div>
+      `).join('');
+    }
+
+    // Admin Access Modal Control
+    function openAdminModal() {
+      document.getElementById('adminModal').classList.remove('hidden');
+      if (isAdminLoggedIn) {
+        document.getElementById('adminAuthView').classList.add('hidden');
+        document.getElementById('adminDashboardView').classList.remove('hidden');
+      } else {
+        document.getElementById('adminAuthView').classList.remove('hidden');
+        document.getElementById('adminDashboardView').classList.add('hidden');
+      }
+    }
+
+    function closeAdminModal() {
+      document.getElementById('adminModal').classList.add('hidden');
+    }
+
+    function verifyAdmin() {
+      const passcode = document.getElementById('adminPasscode').value;
+      if (passcode === 'admin123') {
+        isAdminLoggedIn = true;
+        document.getElementById('adminAuthView').classList.add('hidden');
+        document.getElementById('adminDashboardView').classList.remove('hidden');
+        renderBooks();
+        renderArticles();
+      } else {
+        alert('Passcode မှားယွင်းနေပါသည်။');
+      }
+    }
+
+    function logoutAdmin() {
+      isAdminLoggedIn = false;
+      closeAdminModal();
+      renderBooks();
+      renderArticles();
+    }
+
+    // Add Book
+    function handleAddBook(e) {
+      e.preventDefault();
+      const newBook = {
+        id: Date.now(),
+        title: document.getElementById('bookTitle').value,
+        author: document.getElementById('bookAuthor').value,
+        genre: document.getElementById('bookGenre').value,
+        cover: document.getElementById('bookCover').value || '',
+        pdfUrl: document.getElementById('bookPdf').value,
+        desc: document.getElementById('bookDesc').value
+      };
+
+      books.unshift(newBook);
+      localStorage.setItem('the_library_books', JSON.stringify(books));
+      renderBooks();
+      e.target.reset();
+      alert('E-Book တင်ပြီးပါပြီ။');
+    }
+
+    // Add Article
+    function handleAddArticle(e) {
+      e.preventDefault();
+      const newArticle = {
+        id: Date.now(),
+        title: document.getElementById('articleTitle').value,
+        content: document.getElementById('articleContent').value,
+        date: new Date().toLocaleDateString()
+      };
+
+      articles.unshift(newArticle);
+      localStorage.setItem('the_library_articles', JSON.stringify(articles));
+      renderArticles();
+      e.target.reset();
+      alert('ဆောင်းပါး တင်ပြီးပါပြီ။');
+    }
+
+    // Delete Handlers
+    function deleteBook(id) {
+      if (confirm('ဤစာအုပ်ကို ဖျက်ရန် သေချာပါသလား။')) {
+        books = books.filter(b => b.id !== id);
+        localStorage.setItem('the_library_books', JSON.stringify(books));
+        renderBooks();
+      }
+    }
+
+    function deleteArticle(id) {
+      if (confirm('ဤဆောင်းပါးကို ဖျက်ရန် သေချာပါသလား။')) {
+        articles = articles.filter(a => a.id !== id);
+        localStorage.setItem('the_library_articles', JSON.stringify(articles));
+        renderArticles();
+      }
+    }
+
+    // Search and Filter Handlers
+    function handleSearch() { renderBooks(); }
+    function handleFilter() { renderBooks(); }
+
+    // Initial Load
+    renderBooks();
+    renderArticles();
+  </script>
+</body>
+</html>
